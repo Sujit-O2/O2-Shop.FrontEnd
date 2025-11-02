@@ -9,47 +9,37 @@ function Login({ setUserRole }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError(null);
+  setLoading(true);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_API_URL}/auth/login`,
+      { gmail: email, pass: password },
+      { withCredentials: true }
+    );
 
-    try {
-       await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/login`,
-        {
-          gmail: email,
-          pass: password,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+    const role = res.data?.role;
 
-     
-      const roleCookie = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("role="));
-      const role = roleCookie ? roleCookie.split("=")[1] : null;
-
+    if (role) {
       if (setUserRole) setUserRole(role);
-
-   
-      if (role === "SELLER") {
-        navigate("/seller/dashboard");
-      } else if (role === "USER") {
-        navigate("/dashboard");
-      } else {
-        setError("Invalid role or cookie not found.");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      setError("Login failed. Please check your credentials.");
-    } finally {
-      setLoading(false);
+      if (role === "SELLER") navigate("/seller/dashboard");
+      else if (role === "USER") navigate("/dashboard");
+      else setError("Invalid role value.");
+    } else {
+      setError("Login failed: Role missing.");
     }
-  };
+  } catch (error) {
+    console.error("Login error:", error);
+    setError("Login failed. Please check your credentials.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   return (
     <div className="login-page">

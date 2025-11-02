@@ -1,0 +1,264 @@
+:root {
+  --bg: #f6f7fb;
+  --card: rgba(255, 255, 255, 0.9);
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e5e7eb;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --danger: #dc2626;
+  --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --radius: 18px;
+  --transition: all 0.3s ease;
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu,
+    Cantarell, Noto Sans, Arial;
+  color: var(--text);
+  background: linear-gradient(135deg, #eef2ff, #f0fdf4);
+  background-attachment: fixed;
+}
+
+/* Page */
+.profile-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+/* Card */
+.card {
+  max-width: 440px;
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  backdrop-filter: blur(14px);
+  transition: var(--transition);
+  animation: fadeIn 0.4s ease both;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.15);
+}
+
+/* Header */
+.card-header h2 {
+  margin: 0 0 14px 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+/* Avatar */
+.avatar-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.avatar,
+.avatar.placeholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid transparent;
+  background: linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(135deg, var(--primary), var(--primary-dark)) border-box;
+  transition: var(--transition);
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+.avatar.placeholder {
+  background: #e5e7eb;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 650;
+}
+
+/* Info */
+.info {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.label {
+  font-weight: 600;
+  color: #475569;
+}
+
+.value {
+  color: #111827;
+}
+
+/* Section */
+.section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.section h4 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+/* Role-based Buttons */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.btn-glow {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+  transition: var(--transition);
+}
+
+.btn-glow:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.55);
+}
+
+/* Card actions */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.btn-primary,
+.btn-outlined {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+/* Primary Button */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.25);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.3);
+}
+
+/* Outlined Button */
+.btn-outlined {
+  background: #fff;
+  color: #111827;
+  border: 1px solid var(--border);
+}
+.btn-outlined:hover {
+  border-color: var(--primary);
+  color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+/* Status */
+.status {
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  padding: 20px;
+  border-radius: var(--radius);
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.status.error {
+  color: var(--danger);
+}
+
+.status.muted {
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.link {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

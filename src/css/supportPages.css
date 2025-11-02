@@ -1,0 +1,53 @@
+.support-page {
+  min-height: 90vh;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: white;
+  padding: 3rem 2rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.support-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.06);
+}
+
+.support-container h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.support-container h2 {
+  color: #00c6ff;
+  margin-top: 1.5rem;
+}
+
+.support-container p,
+.support-container li {
+  color: #ccc;
+  line-height: 1.7;
+  font-size: 1rem;
+}
+
+.support-container ul {
+  margin-top: 0.5rem;
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .support-container {
+    padding: 1.5rem;
+  }
+
+  .support-container h1 {
+    font-size: 1.6rem;
+  }
+}

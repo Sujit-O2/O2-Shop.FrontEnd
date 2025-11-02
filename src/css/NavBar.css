@@ -1,0 +1,206 @@
+/* ================================
+   🌈 NAVBAR — Clean & Modern
+   ================================ */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #6a0bb87c;
+  padding: 12px 20px;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  flex-wrap: wrap;
+  transition: transform 0.35s ease-in-out, opacity 0.25s ease-in-out;
+  will-change: transform, opacity;
+  z-index: 1000;
+}
+
+/* Show / Hide effect */
+.navbar-show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.navbar-hide {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+/* ================================
+   🧭 Layout Adjustments
+   ================================ */
+.user-page,
+.main-content {
+  padding-top: 80px;
+}
+
+/* ================================
+   🪪 Logo
+   ================================ */
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 8px;
+}
+
+.logo-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 5px rgba(29, 25, 25, 0.25);
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.logo-link:hover .logo-text {
+  color: #000;
+}
+
+/* ================================
+   🔍 Search Bar
+   ================================ */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  max-width: 400px;
+  margin: 0 10px;
+}
+
+.search-bar input {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  flex: 1;
+}
+
+.search-bar button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-bar button:hover {
+  background-color: #45a049;
+}
+
+/* ================================
+   📦 Navbar Right (Links, Profile)
+   ================================ */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-item {
+  color: #f5f5f5;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.nav-item:hover {
+  background-color: #3a3a5c;
+  transform: scale(1.05);
+}
+
+/* ================================
+   🎟️ Button Variants
+   ================================ */
+.login-btn {
+  background-color: #4caf50;
+}
+
+.login-btn:hover {
+  background-color: #45a049;
+}
+
+.cart-btn {
+  background-color: #3b82f6;
+}
+
+.cart-btn:hover {
+  background-color: #2563eb;
+}
+
+/* ================================
+   👤 Profile Dropdown
+   ================================ */
+.profile-container {
+  position: relative;
+}
+
+.profile-btn {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.profile-btn:hover {
+  background-color: #262635;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background-color: #1d1d25;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  background-color: #1b1b24;
+}
+/* Make sure content doesn't overlap with fixed navbar */
+body {
+  margin: 0;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+

@@ -1,0 +1,241 @@
+/* ==== General Page Styling ==== */
+.seller-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: "Poppins", sans-serif;
+  color: #222;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.muted {
+  color: #777;
+}
+
+/* ==== Alerts ==== */
+.alert {
+  background-color: #ffe6e6;
+  color: #a30000;
+  border: 1px solid #ffcccc;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* ==== Section ==== */
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.section-head h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.count {
+  background: #007bff;
+  color: white;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 12px;
+}
+
+/* ==== Form ==== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+}
+
+.field label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  outline: none;
+}
+
+.textarea {
+  resize: vertical;
+}
+
+/* ==== Buttons ==== */
+.btn-primary,
+.btn-secondary {
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+}
+
+.btn-secondary {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background-color: #e4e4e4;
+  transform: translateY(-1px);
+}
+
+/* ==== Product Cards ==== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+}
+
+.card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.thumb {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.75rem;
+  background: #888;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.card-desc {
+  font-size: 0.9rem;
+  color: #666;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.7rem;
+  font-size: 0.9rem;
+}
+
+.price {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.stock.in {
+  color: #28a745;
+}
+
+.stock.out {
+  color: #dc3545;
+}
+
+/* ==== Buttons inside cards ==== */
+.card-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.card-actions .btn-primary,
+.card-actions .btn-secondary {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

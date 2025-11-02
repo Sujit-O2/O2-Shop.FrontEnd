@@ -1,0 +1,93 @@
+.seller-orders-page {
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.center {
+  text-align: center;
+  margin-top: 40px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.seller-orders-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.seller-order-card {
+  background: #fff;
+  width: 320px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.seller-order-card:hover {
+  transform: scale(1.02);
+}
+
+.seller-order-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.seller-order-details {
+  padding: 15px;
+}
+
+.status-row {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-row select {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.view-btn,
+.delete-btn {
+  flex: 1;
+  margin: 0 4px;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.view-btn {
+  background: #007bff;
+  color: white;
+}
+
+.delete-btn {
+  background: #ff3d3d;
+  color: white;
+}
+
+.view-btn:hover {
+  background: #0056b3;
+}
+
+.delete-btn:hover {
+  background: #d32f2f;
+}

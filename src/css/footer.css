@@ -1,0 +1,224 @@
+.footer {
+  width: 100%;
+  color: #fff;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.06);
+  padding: 3rem 1.5rem 1rem;
+  font-family: "Poppins", sans-serif;
+}
+
+.footer-container {
+  max-width: 1300px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.footer-section h2,
+.footer-section h3 {
+  color: #fff;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.footer-section p {
+  color: #ccc;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.logo {
+  font-size: 1.8rem;
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 0.5rem 0;
+}
+
+.footer-section ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #00c6ff;
+  text-shadow: 0 0 8px rgba(0, 198, 255, 0.7);
+}
+
+/* Social Media */
+.social-links {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.social-links a {
+  color: #ccc;
+  font-size: 1.3rem;
+  transition: 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #00c6ff;
+  transform: scale(1.15);
+}
+
+/* Newsletter */
+.newsletter-form {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  border-radius: 30px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+.newsletter-form input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.8rem 1rem;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.newsletter-form input::placeholder {
+  color: #aaa;
+}
+
+.newsletter-form button {
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  border: none;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.newsletter-form button:hover {
+  background: linear-gradient(45deg, #0072ff, #00c6ff);
+  transform: scale(1.05);
+}
+
+.payment-icons {
+  margin-top: 1.3rem;
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.payment-icons img {
+  width: 45px;
+  height: 28px;
+  object-fit: contain;
+  opacity: 0.85;
+  transition: 0.3s ease;
+}
+
+.payment-icons img:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  text-align: center;
+  margin-top: 2.5rem;
+  font-size: 0.9rem;
+  color: #aaa;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.2rem;
+}
+
+/* Razorpay branding */
+.powered-by {
+  margin-top: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.razorpay-logo {
+  height: 18px;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  transition: 0.3s ease;
+}
+
+.razorpay-logo:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+@media (max-width: 600px) {
+  .newsletter-form {
+    flex-direction: column;
+  }
+
+  .newsletter-form input {
+    width: 100%;
+    text-align: center;
+  }
+
+  .newsletter-form button {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .social-links,
+  .payment-icons {
+    justify-content: center;
+  }
+
+  .powered-by {
+    flex-direction: column;
+  }
+}
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.footer-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.brand-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+}

@@ -1,0 +1,202 @@
+/* UserDashboard.css */
+:root{
+  --bg:#f6f7fb;
+  --card:#fff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --primary:#2563eb;
+  --shadow:0 10px 25px rgba(2,6,23,.08);
+}
+
+.user-page{
+  padding:24px;
+  max-width:1100px;
+  margin-inline:auto;
+}
+
+.user-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+
+.user-header h2{
+  margin:0;
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:-0.01em;
+}
+
+.status{ color:var(--muted); }
+.error{ color:#dc2626; }
+
+/* Grid */
+.product-grid{
+  margin:0;
+  padding:0;
+  list-style:none;
+  display:grid;
+  gap:16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* Card */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.card:focus-within{
+  outline:none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, #ffffff), var(--shadow);
+}
+
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(2,6,23,.12);
+}
+
+/* Make the whole card clickable but keep good semantics */
+.card-action{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  border:0;
+  background:transparent;
+  padding:0;
+  text-align:left;
+  cursor:pointer;
+}
+
+/* Thumb keeps ratio to prevent CLS */
+.thumb{
+  position:relative;
+  aspect-ratio: 4 / 3;
+  background:#f1f5f9;
+  overflow:hidden;
+}
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition: transform 160ms ease;
+}
+.card:hover .thumb img{ transform: scale(1.03); }
+
+/* Body */
+.card-body{
+  padding:12px 14px 14px;
+  display:grid;
+  gap:8px;
+}
+.card-title{
+  margin:0;
+  font-size:16px;
+  font-weight:650;
+  color:var(--text);
+  letter-spacing:-0.01em;
+}
+.card-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.price{
+  font-weight:700;
+  color:#111827;
+}
+.badge{
+  font-size:12px;
+  padding:2px 8px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:#fff;
+  color:#334155;
+}
+
+/* Responsive tweaks */
+@media (max-width:640px){
+  .user-page{ padding:16px; }
+}
+/* Banner Section */
+.banner-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.banner-slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 1s ease, transform 1.5s ease;
+}
+
+.banner-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.banner-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.322);
+  color: rgb(255, 255, 255);
+  padding: 20px 30px;
+  border-radius: 12px;
+}
+
+.banner-overlay h2 {
+  font-size: 1.8rem;
+  margin: 0 0 0.3rem 0;
+}
+
+.banner-overlay p {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Existing grid (for reference) */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  list-style: none;
+  padding: 1rem;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.thumb img {
+  width: 100%;
+  object-fit: cover;
+}

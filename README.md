@@ -1,12 +1,43 @@
-# React + Vite
+# 🛍️ O2 Shop Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![React](https://img.shields.io/badge/React-18.0-blue?style=for-the-badge&logo=react)
+![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)
+![Status](https://img.shields.io/badge/Status-Online-success?style=for-the-badge)
 
-Currently, two official plugins are available:
+> ⚡ Modern E-Commerce Frontend built with **React**, deployed on **Vercel**, and connected to a **Spring Boot Backend (Render)**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Live Demo  
+🔗 **Frontend:** [O2 Shop (Vercel)](https://o2-shop-front-end.vercel.app)  
+🔗 **Backend (Render):** [O2 Shop API](https://o2-shop-backend.onrender.com)  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🧩 Tech Stack
+| Layer | Technology |
+|-------|-------------|
+| Frontend | React + Vite |
+| Styling | CSS / TailwindCSS |
+| State Management | React Hooks |
+| API Handling | Axios (withCredentials enabled) |
+| Deployment | Vercel |
+| Backend | Spring Boot (Render) |
+| Auth | Cookie-based Authentication (JWT) |
+
+---
+
+## ⚙️ Features
+✅ Secure Login / Signup  
+✅ Role-based Access (Seller / User)  
+✅ Cookie Authentication (Auto Login)  
+✅ Responsive Dashboard UI  
+✅ Integrated Backend API  
+✅ Deployed & CI-Ready  
+
+---
+
+## 🧠 Environment Variables
+Create a `.env` file in your root directory:
+```bash
+VITE_API_URL=https://o2-shop-backend.onrender.com

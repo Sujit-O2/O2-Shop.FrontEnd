@@ -19,7 +19,6 @@ import ReturnPolicy from "./ReturnPolicy";
 import ShippingInfo from "./ShippingInfo";
 import ContactUs from "./ContactUs";
 import TermsConditions from "./TermsConditions";
-import Search from "./Search"; 
 
 // Wrappers for dynamic routes
 function AddProductPhotosWrapper() {
@@ -38,6 +37,8 @@ function CheckoutWrapper() {
 }
 
 export default function App() {
+  
+
   const location = useLocation();
 
   const hideNav = ["/login", "/signup"].includes(location.pathname);
@@ -58,9 +59,6 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout/:id" element={<CheckoutWrapper />} />
         <Route path="/products/:id" element={<SingleProductWrapper />} />
-        
-        <Route path="/products/search/:query" element={<Search />} />
-
         <Route path="/seller/dashboard" element={<SellerDashboard />} />
         <Route path="/seller/orders" element={<SellerOrders />} />
         <Route path="/seller/update/:id" element={<UpdateProduct />} />

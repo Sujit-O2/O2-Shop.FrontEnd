@@ -1,206 +1,295 @@
-/* ================================
-   🌈 NAVBAR — Clean & Modern
-   ================================ */
+:root {
+  --nav-bg: rgba(255, 255, 255, 0.85);
+  --nav-border: rgba(255, 255, 255, 0.5);
+  --primary-color: #6366f1; /* Indigo matching login */
+  --primary-hover: #4f46e5;
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
+  --search-bg: #f3f4f6;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+/* Add padding to the top of the body to push ALL content down */
+body {
+  padding-top: 80px; /* 70px Navbar height + 10px buffer */
+}
 
+/* --- Main Navbar Container --- */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #6a0bb87c;
-  padding: 12px 20px;
-  color: white;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  flex-wrap: wrap;
-  transition: transform 0.35s ease-in-out, opacity 0.25s ease-in-out;
-  will-change: transform, opacity;
+  height: 70px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px); /* Glassmorphism */
+  border-bottom: 1px solid var(--nav-border);
+  box-shadow: var(--shadow-sm);
   z-index: 1000;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease;
 }
 
-/* Show / Hide effect */
-.navbar-show {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.navbar-hide {
+.navbar-hidden {
   transform: translateY(-100%);
-  opacity: 0;
 }
 
-/* ================================
-   🧭 Layout Adjustments
-   ================================ */
-.user-page,
-.main-content {
-  padding-top: 80px;
+.navbar-visible {
+  transform: translateY(0);
 }
 
-/* ================================
-   🪪 Logo
-   ================================ */
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+/* --- Logo Section --- */
+.nav-left {
+  flex: 1;
+}
+
 .logo-link {
   display: flex;
   align-items: center;
   text-decoration: none;
-  gap: 8px;
+  gap: 10px;
 }
 
 .logo-img {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
-  object-fit: cover;
-  box-shadow: 0 2px 5px rgba(29, 25, 25, 0.25);
+  height: 40px;
+  width: auto;
 }
 
 .logo-text {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.5px;
-  transition: color 0.3s ease;
+  background: linear-gradient(135deg, var(--primary-color), #ec4899);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
 }
 
-.logo-link:hover .logo-text {
-  color: #000;
-}
-
-/* ================================
-   🔍 Search Bar
-   ================================ */
-.search-bar {
+/* --- Search Bar --- */
+.nav-center {
+  flex: 2;
   display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
+  justify-content: center;
+}
+
+.search-bar {
+  position: relative;
+  width: 100%;
   max-width: 400px;
-  margin: 0 10px;
 }
 
 .search-bar input {
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: none;
+  width: 100%;
+  padding: 10px 15px 10px 40px; /* Space for icon */
+  border-radius: 50px;
+  border: 1px solid transparent;
+  background-color: var(--search-bg);
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+
+.search-bar input:focus {
   outline: none;
+  background-color: #fff;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+}
+
+/* --- Right Side Actions --- */
+.nav-right {
   flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
 }
 
-.search-bar button {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.search-bar button:hover {
-  background-color: #45a049;
-}
-
-/* ================================
-   📦 Navbar Right (Links, Profile)
-   ================================ */
-.navbar-right {
+.nav-links {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .nav-item {
-  color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   text-decoration: none;
-  padding: 6px 12px;
-  border-radius: 5px;
-  transition: background-color 0.2s, transform 0.1s;
+  color: var(--text-dark);
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
 }
 
 .nav-item:hover {
-  background-color: #3a3a5c;
-  transform: scale(1.05);
+  color: var(--primary-color);
 }
 
-/* ================================
-   🎟️ Button Variants
-   ================================ */
-.login-btn {
-  background-color: #4caf50;
+.nav-icon {
+  font-size: 1.1rem;
 }
 
-.login-btn:hover {
-  background-color: #45a049;
+/* On mobile, hide text label, show only icon */
+@media (max-width: 768px) {
+  .nav-label {
+    display: none;
+  }
 }
 
-.cart-btn {
-  background-color: #3b82f6;
-}
-
-.cart-btn:hover {
-  background-color: #2563eb;
-}
-
-/* ================================
-   👤 Profile Dropdown
-   ================================ */
+/* --- Profile Dropdown --- */
 .profile-container {
   position: relative;
 }
 
 .profile-btn {
-  background-color: transparent;
-  border: none;
-  color: white;
+  background: transparent;
+  border: 1px solid transparent;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 6px 12px;
-  border-radius: 5px;
-  transition: background-color 0.2s;
+  border-radius: 20px;
+  transition: background 0.2s ease;
 }
 
-.profile-btn:hover {
-  background-color: #262635;
+.profile-btn:hover, .profile-btn.active {
+  background-color: var(--search-bg);
 }
 
+.user-avatar {
+  font-size: 1.8rem;
+  color: var(--text-light);
+}
+
+.user-name {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+/* Dropdown Menu */
 .dropdown-menu {
   position: absolute;
+  top: 120%;
   right: 0;
-  top: 40px;
-  background-color: #1d1d25;
-  border-radius: 6px;
+  width: 220px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid #e5e7eb;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  animation: slideDown 0.2s ease-out;
   display: flex;
   flex-direction: column;
-  min-width: 150px;
 }
 
-.dropdown-menu a,
-.dropdown-menu button {
-  color: white;
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-header {
+  padding: 15px;
+  border-bottom: 1px solid #f3f4f6;
+  background-color: #fafafa;
+}
+
+.dropdown-header p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.dropdown-header strong {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-item {
+  padding: 12px 15px;
   text-decoration: none;
-  padding: 10px;
-  border: none;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  transition: background 0.2s;
   background: none;
+  border: none;
+  width: 100%;
   text-align: left;
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.2s ease;
 }
 
-.dropdown-menu a:hover,
-.dropdown-menu button:hover {
-  background-color: #1b1b24;
-}
-/* Make sure content doesn't overlap with fixed navbar */
-body {
-  margin: 0;
-  padding-top: 80px;
-  padding-bottom: 80px;
+.dropdown-item:hover {
+  background-color: #f3f4f6;
+  color: var(--primary-color);
 }
 
+.logout-item {
+  border-top: 1px solid #f3f4f6;
+  color: #ef4444; /* Red for logout */
+}
 
+.logout-item:hover {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+/* --- Login Button (Guest) --- */
+.login-btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 8px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.login-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  .logo-text {
+    display: none; /* Show only logo icon on small screens */
+  }
+  
+  .search-bar {
+    max-width: 100%;
+    margin: 0 10px;
+  }
+  
+  .user-name {
+    display: none;
+  }
+  
+  .nav-container {
+    padding: 0 10px;
+  }
+}

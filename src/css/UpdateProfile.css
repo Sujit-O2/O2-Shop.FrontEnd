@@ -1,0 +1,214 @@
+:root {
+  --primary: #4f46e5;       /* Indigo */
+  --primary-hover: #4338ca;
+  --bg-color: #f3f4f6;      /* Light Gray */
+  --card-bg: #ffffff;
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --success-bg: #ecfdf5;
+  --success-text: #065f46;
+  --error-bg: #fef2f2;
+  --error-text: #991b1b;
+}
+
+/* Page Container */
+.update-profile-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  padding: 1.5rem;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Card Styling */
+.profile-card {
+  background: var(--card-bg);
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+  text-align: center;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.card-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.card-header p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+/* Avatar Section */
+.avatar-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.camera-btn {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: var(--primary);
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.camera-btn:hover {
+  background-color: var(--primary-hover);
+  transform: scale(1.1);
+}
+
+.hidden-input {
+  display: none;
+}
+
+/* Inputs */
+.form-group {
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+}
+
+.custom-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem; /* Left padding for icon */
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.custom-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Status Message */
+.status-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-message.success {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+  border: 1px solid #a7f3d0;
+}
+
+.status-message.error {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid #fecaca;
+}
+
+/* Buttons */
+.update-btn {
+  width: 100%;
+  padding: 0.875rem;
+  background-color: var(--primary);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.update-btn:hover {
+  background-color: var(--primary-hover);
+}
+
+.update-btn:active {
+  transform: translateY(1px);
+}
+
+.update-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Spinner Animation */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

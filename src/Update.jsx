@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Camera, User, Save, Loader2, CheckCircle, AlertCircle } from "lucide-react";
+import "./css/UpdateProfile.css";
 
 export default function UpdateProfile() {
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: "", text: "" });
 
+  // Helper: Convert file to Base64
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -16,106 +21,108 @@ export default function UpdateProfile() {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const base64 = await toBase64(file);
-      setPhoto(base64);
+      // Basic validation for image size (optional, e.g., 2MB limit)
+      if (file.size > 2 * 1024 * 1024) {
+        setMessage({ type: "error", text: "Image size must be less than 2MB" });
+        return;
+      }
+      try {
+        const base64 = await toBase64(file);
+        setPhoto(base64);
+        setMessage({ type: "", text: "" }); // Clear errors
+      } catch (err) {
+        setMessage({ type: "error", text: "Failed to process image" });
+      }
     }
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage({ type: "", text: "" });
 
     try {
-
-      const res = await axios.put(
+      await axios.put(
         `${import.meta.env.VITE_API_URL}/update`,
-        {
-          name,
-          photo
-          
-        },
-        {withCredentials:true}
+        { name, photo },
+        { withCredentials: true }
       );
 
-      alert("Profile Updated Successfully!");
-      console.log(res.data);
+      setMessage({ type: "success", text: "Profile updated successfully!" });
     } catch (err) {
       console.error(err);
-      alert("Update failed. Please try again.");
+      setMessage({ type: "error", text: "Update failed. Please try again." });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "100vh",       // full viewport height
-  background: "linear-gradient(135deg, #74ebd5, #ACB6E5)", // nice gradient
-  fontFamily: "Arial, sans-serif"
-}}>
-  <div style={{
-    maxWidth: "400px",
-    width: "100%",
-    padding: "30px",
-    background: "white",
-    borderRadius: "12px",
-    boxShadow: "0 6px 20px rgba(0,0,0,0.1)"
-  }}>
-    <h2 style={{ textAlign: "center", marginBottom: "20px", color: "#333" }}>
-      Update Profile
-    </h2>
+    <div className="update-profile-container">
+      <div className="profile-card fade-in">
+        
+        <div className="card-header">
+          <h2>Edit Profile</h2>
+          <p>Update your personal details</p>
+        </div>
 
-    <form onSubmit={handleUpdate}>
-      <div style={{ marginBottom: "20px" }}>
-        <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>
-          Update Name:
-        </label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Enter new name"
-          style={{
-            borderRadius: "8px",
-            width: "100%",
-            padding: "10px",
-            border: "1px solid #ccc",
-            outline: "none",
-            transition: "0.3s"
-          }}
-          onFocus={(e) => (e.target.style.border = "1px solid #28a745")}
-          onBlur={(e) => (e.target.style.border = "1px solid #ccc")}
-        />
+        <form onSubmit={handleUpdate} className="profile-form">
+          
+          {/* Avatar Section */}
+          <div className="avatar-section">
+            <div className="avatar-wrapper">
+              <img
+                src={photo || "https://cdn-icons-png.flaticon.com/512/149/149071.png"}
+                alt="Profile Preview"
+                className="profile-img"
+              />
+              <label htmlFor="fileInput" className="camera-btn" title="Change Photo">
+                <Camera size={18} />
+              </label>
+            </div>
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden-input"
+            />
+          </div>
+
+          {/* Alert Messages */}
+          {message.text && (
+            <div className={`status-message ${message.type}`}>
+              {message.type === 'success' ? <CheckCircle size={16}/> : <AlertCircle size={16}/>}
+              <span>{message.text}</span>
+            </div>
+          )}
+
+          {/* Inputs */}
+          <div className="form-group">
+            <label htmlFor="nameInput">Full Name</label>
+            <div className="input-wrapper">
+              <User className="input-icon" size={20} />
+              <input
+                id="nameInput"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Enter your new name"
+                className="custom-input"
+              />
+            </div>
+          </div>
+
+          {/* Action Button */}
+          <button type="submit" className="update-btn" disabled={loading}>
+            {loading ? (
+              <> <Loader2 className="spinner" size={18} /> Saving... </>
+            ) : (
+              <> <Save size={18} /> Save Changes </>
+            )}
+          </button>
+        </form>
       </div>
-
-      <div style={{ marginBottom: "20px" }}>
-        <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>
-          Update Photo:
-        </label>
-        <input type="file" accept="image/*" onChange={handleFileChange} />
-      </div>
-
-      <button
-        type="submit"
-        style={{
-          width: "100%",
-          padding: "12px",
-          background: "linear-gradient(135deg, #28a745, #218838)",
-          color: "white",
-          border: "none",
-          borderRadius: "8px",
-          fontWeight: "bold",
-          cursor: "pointer",
-          transition: "0.3s"
-        }}
-        onMouseOver={(e) => (e.target.style.opacity = "0.9")}
-        onMouseOut={(e) => (e.target.style.opacity = "1")}
-      >
-        Update Profile
-      </button>
-    </form>
-  </div>
-</div>
-
+    </div>
   );
 }

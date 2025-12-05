@@ -1,97 +1,143 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import { 
+  FaFacebookF, 
+  FaInstagram, 
+  FaTwitter, 
+  FaLinkedinIn, 
+  FaPaperPlane, 
+  FaCheckCircle, 
+  FaExclamationCircle 
+} from "react-icons/fa";
 import "./css/footer.css";
 import logo from "./assets/O2.png";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState(null); // 'success' or 'error'
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
-    setMessage(""); // clear previous message
+    setMessage("");
+    setStatus(null);
+    setLoading(true);
 
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/auth/mail/newSus`, null, {
-  params: { email },
-})
-      setMessage("✅ Thank you for subscribing!");
+        params: { email },
+      });
+      setMessage("Subscribed successfully!");
+      setStatus("success");
       setEmail("");
     } catch (error) {
       console.error("Error subscribing:", error);
-      setMessage("❌ Failed to subscribe. Please try again later.");
+      setMessage("Subscription failed. Try again.");
+      setStatus("error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <footer className="footer">
-      <div className="footer-container">
-        {/* Brand Info */}
-        <div className="footer-section about">
-          <div className="footer-brand">
+      <div className="footer-content">
+        {/* 1. Brand & About */}
+        <div className="footer-section brand-section">
+          <div className="brand-header">
             <img src={logo} alt="O2 Logo" className="footer-logo" />
-            <h2 className="brand-name">O2 Shop.</h2>
+            <h2 className="brand-name">O2 Shop</h2>
           </div>
-          <p>
-            Your one-stop destination for premium fashion, electronics, and home
-            products. Trusted by thousands of happy customers worldwide.
+          <p className="brand-desc">
+            Your premium destination for fashion, electronics, and lifestyle products. 
+            Quality meets convenience at O2 Shop.
           </p>
-          <div className="social-links">
-            <a href="#"><i className="fab fa-facebook-f"></i></a>
-            <a href="#"><i className="fab fa-instagram"></i></a>
-            <a href="#"><i className="fab fa-x-twitter"></i></a>
-            <a href="#"><i className="fab fa-linkedin-in"></i></a>
+          <div className="social-icons">
+            <a href="#" className="social-link"><FaFacebookF /></a>
+            <a href="#" className="social-link"><FaInstagram /></a>
+            <a href="#" className="social-link"><FaTwitter /></a>
+            <a href="#" className="social-link"><FaLinkedinIn /></a>
           </div>
         </div>
 
-        {/* Support Links */}
-        <div className="footer-section links">
-          <h3>Support</h3>
+        {/* 2. Quick Links */}
+        <div className="footer-section links-section">
+          <h3>Customer Care</h3>
           <ul>
-            <li><a href="/faq">FAQs</a></li>
-            <li><a href="/returns">Return Policy</a></li>
-            <li><a href="/shipping">Shipping Info</a></li>
-            <li><a href="/contact">Contact Us</a></li>
-            <li><a href="/terms">Terms & Conditions</a></li>
+            <li><Link to="/orders">Track Order</Link></li>
+            <li><Link to="/returns">Returns & Refunds</Link></li>
+            <li><Link to="/shipping">Shipping Policy</Link></li>
+            <li><Link to="/faq">FAQs</Link></li>
+            <li><Link to="/contact">Contact Support</Link></li>
           </ul>
         </div>
 
-        {/* Newsletter */}
-        <div className="footer-section newsletter">
-          <h3>Stay Updated</h3>
-          <p>Subscribe to get the latest deals and product updates!</p>
+        {/* 3. Company */}
+        <div className="footer-section links-section">
+          <h3>Company</h3>
+          <ul>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/careers">Careers</Link></li>
+            <li><Link to="/terms">Terms & Conditions</Link></li>
+            <li><Link to="/privacy">Privacy Policy</Link></li>
+            <li><Link to="/seller/signup">Become a Seller</Link></li>
+          </ul>
+        </div>
+
+        {/* 4. Newsletter */}
+        <div className="footer-section newsletter-section">
+          <h3>Stay in the Loop</h3>
+          <p>Subscribe for exclusive deals and updates.</p>
+          
           <form className="newsletter-form" onSubmit={handleSubscribe}>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button type="submit">Send</button>
+            <div className="input-group">
+              <input
+                type="email"
+                placeholder="Your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading}
+              />
+              <button type="submit" disabled={loading}>
+                {loading ? <span className="loader"></span> : <FaPaperPlane />}
+              </button>
+            </div>
           </form>
-          {message && <p className="newsletter-message">{message}</p>}
-          <div className="payment-icons">
-            <img src="https://cdn-icons-png.flaticon.com/512/5968/5968299.png" alt="Visa" />
-            <img src="https://cdn-icons-png.flaticon.com/512/196/196566.png" alt="MasterCard" />
-            <img src="https://cdn-icons-png.flaticon.com/512/825/825454.png" alt="PayPal" />
-            <img src="https://cdn-icons-png.flaticon.com/512/349/349228.png" alt="UPI" />
+
+          {message && (
+            <div className={`status-msg ${status}`}>
+              {status === 'success' ? <FaCheckCircle /> : <FaExclamationCircle />}
+              <span>{message}</span>
+            </div>
+          )}
+
+          <div className="payment-methods">
+             <p>Secured Payments:</p>
+             <div className="payment-icons">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="Paypal" />
+             </div>
           </div>
         </div>
       </div>
 
       {/* Footer Bottom */}
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} O2 Shop . | All Rights Reserved</p>
-
-        {/* Razorpay Logo */}
-        <div className="powered-by">
-          <span>Payments powered by</span>
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg"
-            alt="Razorpay"
-            className="razorpay-logo"
-          />
+        <div className="bottom-content">
+          <p>© {new Date().getFullYear()} O2 Shop. All Rights Reserved.</p>
+          
+          <div className="powered-by">
+            <span>Powered by</span>
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg"
+              alt="Razorpay"
+              className="razorpay-logo"
+            />
+          </div>
         </div>
       </div>
     </footer>

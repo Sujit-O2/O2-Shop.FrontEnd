@@ -1,165 +1,230 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaTrashAlt, FaShoppingBag, FaArrowRight, FaMinus, FaPlus } from "react-icons/fa";
 import "./css/Cart.css";
 
 export default function Cart() {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch cart from backend (cookie-based auth)
+  // Fetch cart
   useEffect(() => {
     const fetchCart = async () => {
       try {
         setLoading(true);
         const res = await fetch(`${import.meta.env.VITE_API_URL}/user/cart`, {
           method: "GET",
-          credentials: "include", // ✅ Send cookies automatically
+          credentials: "include",
         });
 
         if (res.status === 401) {
-          // Not logged in — redirect
           navigate("/login");
           return;
         }
-
-        if (!res.ok) throw new Error("Failed to fetch cart items");
+        if (!res.ok) throw new Error("Failed to fetch");
+        
         const data = await res.json();
-
-        if (!Array.isArray(data)) throw new Error("Invalid cart payload");
-        setCartItems(data);
+        setCartItems(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error("Error loading cart:", err);
-        alert("Could not load cart items");
+        console.error(err);
       } finally {
-        setLoading(false);
+        // Small delay for smooth skeleton transition
+        setTimeout(() => setLoading(false), 500);
       }
     };
-
     fetchCart();
   }, [navigate]);
 
-  // Remove from cart
+  // Handle Remove
   const handleRemove = async (productPid) => {
-    if (!window.confirm("Remove this item from your cart?")) return;
+    // Optimistic UI update: Remove immediately from UI, revert if API fails
+    const originalItems = [...cartItems];
+    setCartItems((prev) => prev.filter((item) => item.product.pid !== productPid));
+
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/user/cart/remove/${productPid}`,
-        {
-          method: "DELETE",
-          credentials: "include", // ✅ Cookie auth
-        }
+        { method: "DELETE", credentials: "include" }
       );
-
-      if (!res.ok) throw new Error("Failed to remove item");
-      setCartItems((prev) =>
-        prev.filter((ci) => ci.product.pid !== productPid)
-      );
+      if (!res.ok) throw new Error("Failed");
     } catch (err) {
-      alert(err.message || "Error removing item");
+      alert("Failed to remove item");
+      setCartItems(originalItems); // Revert
     }
   };
 
-  // Update quantity
-  const handleQuantityChange = async (productPid, newQty) => {
+  // Handle Quantity
+  const handleQuantityChange = async (productPid, currentQty, change) => {
+    const newQty = currentQty + change;
     if (newQty < 1) return;
+
+    // Optimistic UI update
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.product.pid === productPid ? { ...item, quantity: newQty } : item
+      )
+    );
+
     try {
-      const res = await fetch(
+      await fetch(
         `${import.meta.env.VITE_API_URL}/user/cart/update/${productPid}`,
         {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include", // ✅ Cookie auth
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({ quantity: newQty }),
         }
       );
-
-      if (!res.ok) throw new Error("Failed to update quantity");
-      setCartItems((prev) =>
-        prev.map((ci) =>
-          ci.product.pid === productPid ? { ...ci, quantity: newQty } : ci
-        )
-      );
     } catch (err) {
-      alert(err.message || "Error updating quantity");
+      console.error("Update failed");
+      // Revert logic could go here
     }
   };
 
-  // Checkout a single product
-  const handleCheckout = (productPid) => {
-    navigate(`/checkout/${productPid}`);
-  };
+  // Calculate Totals
+  const { subtotal, totalItems } = useMemo(() => {
+    return cartItems.reduce(
+      (acc, item) => ({
+        subtotal: acc.subtotal + (item.product.price * item.quantity),
+        totalItems: acc.totalItems + item.quantity
+      }),
+      { subtotal: 0, totalItems: 0 }
+    );
+  }, [cartItems]);
 
-  // Calculate total price
-  const totalPrice = cartItems.reduce(
-    (sum, item) => sum + (item.product?.price || 0) * (item.quantity || 1),
-    0
+  const shipping = subtotal > 499 ? 0 : 40;
+  const grandTotal = subtotal + shipping;
+
+  // Render Loading
+  if (loading) return (
+    <div className="cart-page">
+      <h2>Your Cart</h2>
+      <div className="cart-grid">
+        <div className="cart-list">
+          {[1, 2].map((i) => <div key={i} className="skeleton-item"></div>)}
+        </div>
+      </div>
+    </div>
   );
 
-  // Loading / Empty state
-  if (loading) return <p>Loading your cart...</p>;
-  if (!cartItems || cartItems.length === 0)
+  // Render Empty
+  if (cartItems.length === 0) {
     return (
       <div className="cart-empty">
-        <h2>Your cart is empty 😕</h2>
-        <button onClick={() => navigate("/products")}>Shop Now</button>
+        <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
+          <FaShoppingBag className="empty-icon" />
+        </motion.div>
+        <h2>Your cart is currently empty</h2>
+        <p>Looks like you haven't added anything to your cart yet.</p>
+        <button onClick={() => navigate("/")} className="btn-shop">
+          Start Shopping
+        </button>
       </div>
     );
+  }
 
   return (
     <div className="cart-page">
-      <h2>Your Cart</h2>
+      <div className="page-header">
+        <h2>Shopping Cart <span>({totalItems} items)</span></h2>
+      </div>
 
-      <div className="cart-items">
-        {cartItems.map((item) => {
-          const { product, quantity } = item;
-          const imageSrc = product.img
-            ? `data:image/jpeg;base64,${product.img}`
-            : "/default-product.png";
+      <div className="cart-grid">
+        {/* --- Left Column: Items --- */}
+        <div className="cart-list">
+          <AnimatePresence>
+            {cartItems.map((item) => {
+              const { product, quantity } = item;
+              // Handle image array or string
+              const imgRaw = Array.isArray(product.img) ? product.img[0] : product.img;
+              const imageSrc = imgRaw
+                ? `data:image/jpeg;base64,${imgRaw}`
+                : "/default-product.png";
 
-          return (
-            <div key={item.id} className="cart-item">
-              <img src={imageSrc} alt={product.pname} className="cart-img" />
+              return (
+                <motion.div 
+                  key={product.pid} 
+                  className="cart-item"
+                  layout
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="item-image">
+                    <img src={imageSrc} alt={product.pname} />
+                  </div>
 
-              <div className="cart-details">
-                <h3>{product.pname}</h3>
-                <p>{product.description}</p>
-                <p>Price: ₹{product.price}</p>
+                  <div className="item-details">
+                    <div className="item-header">
+                      <h3>{product.pname}</h3>
+                      <button 
+                        className="btn-trash" 
+                        onClick={() => handleRemove(product.pid)}
+                        title="Remove Item"
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </div>
+                    
+                    <p className="item-price">₹{Number(product.price).toLocaleString()}</p>
+                    
+                    <div className="item-actions">
+                      <div className="qty-control">
+                        <button onClick={() => handleQuantityChange(product.pid, quantity, -1)}>
+                          <FaMinus />
+                        </button>
+                        <span>{quantity}</span>
+                        <button onClick={() => handleQuantityChange(product.pid, quantity, 1)}>
+                          <FaPlus />
+                        </button>
+                      </div>
+                      
+                      {/* Individual Checkout Button */}
+                      <button 
+                        className="btn-buy-now" 
+                        onClick={() => navigate(`/checkout/${product.pid}`)}
+                      >
+                        Buy This Now <FaArrowRight />
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
 
-                <div className="quantity-section">
-                  <label>Quantity: </label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={quantity}
-                    onChange={(e) =>
-                      handleQuantityChange(product.pid, Number(e.target.value))
-                    }
-                  />
-                </div>
-
-                <p>Total: ₹{product.price * quantity}</p>
-
-                <div className="cart-actions">
-                  <button
-                    className="remove-btn"
-                    onClick={() => handleRemove(product.pid)}
-                  >
-                    Remove
-                  </button>
-                  <button
-                    className="buy-btn"
-                    onClick={() => handleCheckout(product.pid)}
-                  >
-                    Buy Now
-                  </button>
-                </div>
-              </div>
+        {/* --- Right Column: Summary --- */}
+        <div className="cart-summary">
+          <div className="summary-card">
+            <h3>Order Summary</h3>
+            
+            <div className="summary-row">
+              <span>Subtotal</span>
+              <span>₹{subtotal.toLocaleString()}</span>
             </div>
-          );
-        })}
+            <div className="summary-row">
+              <span>Shipping Estimate</span>
+              <span className={shipping === 0 ? "free-text" : ""}>
+                {shipping === 0 ? "FREE" : `₹${shipping}`}
+              </span>
+            </div>
+            
+            <div className="divider"></div>
+            
+            <div className="summary-row total">
+              <span>Total</span>
+              <span>₹{grandTotal.toLocaleString()}</span>
+            </div>
+
+            <p className="note">
+              * Note: You can proceed to checkout for individual items using the "Buy Now" buttons.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

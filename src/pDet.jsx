@@ -1,66 +1,55 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom"; // Added useParams for flexibility
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  FaShoppingCart, FaBolt, FaArrowLeft, FaStore, 
+  FaCheckCircle, FaTimesCircle, FaChevronLeft, FaChevronRight 
+} from "react-icons/fa";
 import "./css/pdet.css";
 
+export default function SingleProduct({ productId: propId }) {
+  // Handle ID from props OR URL params (makes routing easier)
+  const { id } = useParams();
+  const productId = propId || id;
 
-export default function SingleProduct({ productId }) {
   const [product, setProduct] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFading, setIsFading] = useState(false);
-  const [loadingAction, setLoadingAction] = useState(null); // "cart" | "buy" | null
+  const [loadingAction, setLoadingAction] = useState(null); // "cart" | "buy"
   const [role, setRole] = useState(null);
-  const fadeTimeoutRef = useRef(null);
   const navigate = useNavigate();
 
-  // 🔹 Read role from cookies
+  // Read Role
   useEffect(() => {
-    const cookies = document.cookie.split(";").reduce((acc, cookie) => {
-      const [key, value] = cookie.trim().split("=");
-      acc[key] = value;
-      return acc;
-    }, {});
-    setRole(cookies.role || null);
+    const roleCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("role="));
+    if (roleCookie) setRole(roleCookie.split("=")[1]);
   }, []);
 
-  // Fetch product details
+  // Fetch Data
   useEffect(() => {
-    let isMounted = true;
-    fetch(`${import.meta.env.VITE_API_URL}/auth/products/${productId}`, { credentials: "include" })
-      .then((res) => res.json())
-      .then((data) => {
-        if (isMounted) setProduct(data);
-      })
-      .catch((err) => console.error(err));
-    return () => {
-      isMounted = false;
-      clearTimeout(fadeTimeoutRef.current);
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/products/${productId}`, {
+          credentials: "include",
+        });
+        const data = await res.json();
+        setProduct(data);
+      } catch (err) {
+        console.error("Failed to load product", err);
+      }
     };
+    if (productId) fetchProduct();
   }, [productId]);
 
-  if (!product) return <p className="loading">Loading product...</p>;
+  // Image Navigation
+  const total = product?.img?.length || 0;
+  
+  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % total);
+  const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? total - 1 : prev - 1));
+  const goTo = (index) => setCurrentIndex(index);
 
-  const total = Array.isArray(product.img) ? product.img.length : 0;
-
-  // Slider functions
-  const goTo = (nextIdx) => {
-    if (total === 0) return;
-    setIsFading(true);
-    clearTimeout(fadeTimeoutRef.current);
-    fadeTimeoutRef.current = setTimeout(() => {
-      setCurrentIndex(nextIdx);
-      setIsFading(false);
-    }, 150);
-  };
-
-  const nextSlide = () => {
-    if (total > 0) goTo((currentIndex + 1) % total);
-  };
-
-  const prevSlide = () => {
-    if (total > 0) goTo(currentIndex === 0 ? total - 1 : currentIndex - 1);
-  };
-
-  // Add to cart
+  // Actions
   const handleAddToCart = async () => {
     try {
       setLoadingAction("cart");
@@ -69,101 +58,143 @@ export default function SingleProduct({ productId }) {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
-      if (!res.ok) throw new Error("Failed to add to cart");
-      alert("Added to cart");
+      if (!res.ok) throw new Error("Failed");
+      
+      // Visual feedback handled by button state, alert as backup
+      setTimeout(() => alert("Item added to cart!"), 100);
     } catch (e) {
-      alert(e.message || "Error adding to cart");
+      alert("Could not add to cart.");
     } finally {
       setLoadingAction(null);
     }
   };
 
-  // Buy now → navigate to Checkout page
   const handleBuyNow = () => {
-    navigate(`/checkout/${productId}`);
+    setLoadingAction("buy");
+    setTimeout(() => navigate(`/checkout/${productId}`), 500);
   };
 
-  // 🔹 Lock buttons for sellers
+  // Skeleton Loader
+  if (!product) return (
+    <div className="pdet-page skeleton-wrapper">
+      <div className="skeleton-left"></div>
+      <div className="skeleton-right">
+        <div className="line l1"></div>
+        <div className="line l2"></div>
+        <div className="line l3"></div>
+      </div>
+    </div>
+  );
+
   const isSeller = role === "SELLER";
+  const isOutOfStock = product.status !== 1;
+  const currentImgSrc = `data:image/jpeg;base64,${product.img[currentIndex]}`;
 
   return (
-    <div className="page-bg">
-      <div className="content-wrap">
-        <div className="split-card">
-          {/* Left: Product Image Slider */}
-          <section className="left-pane">
-            <div className="slider-box">
-              {total > 0 ? (
-                <>
-                  <img
-                    src={`data:image/jpeg;base64,${product.img[currentIndex]}`}
-                    alt="product"
-                    className={`hero ${isFading ? "fade-out" : "fade-in"}`}
-                    loading="lazy"
-                  />
-                  <button className="nav prev" onClick={prevSlide} disabled={total <= 1}>
-                    ❮
-                  </button>
-                  <button className="nav next" onClick={nextSlide} disabled={total <= 1}>
-                    ❯
-                  </button>
-                </>
-              ) : (
-                <div className="no-image">No images available</div>
-              )}
-            </div>
+    <div className="pdet-page">
+      <button className="btn-back" onClick={() => navigate(-1)}>
+        <FaArrowLeft /> Back to Browse
+      </button>
 
+      <div className="product-container">
+        
+        {/* --- Left Column: Gallery --- */}
+        <div className="gallery-section">
+          <div className="main-image-frame">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentIndex}
+                src={currentImgSrc}
+                alt={product.pname}
+                className="main-img"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              />
+            </AnimatePresence>
+            
             {total > 1 && (
-              <div className="thumb-strip">
-                {product.img.map((_, idx) => (
-                  <button
-                    key={idx}
-                    className={`thumb-btn ${idx === currentIndex ? "active" : ""}`}
-                    onClick={() => goTo(idx)}
-                  >
-                    <img
-                      src={`data:image/jpeg;base64,${product.img[idx]}`}
-                      alt={`thumb-${idx + 1}`}
-                      className="thumb"
-                    />
-                  </button>
-                ))}
-              </div>
+              <>
+                <button className="nav-btn prev" onClick={prevSlide}><FaChevronLeft /></button>
+                <button className="nav-btn next" onClick={nextSlide}><FaChevronRight /></button>
+              </>
             )}
-          </section>
+          </div>
 
-          {/* Right: Product Details */}
-          <section className="right-pane">
-            <h1 className="pname">{product.pname}</h1>
-            <p className="seller">Seller: {product.sellername}</p>
-
-            <div className="meta">
-              <p><b>Price:</b> ₹{product.price}</p>
-              <p><b>Stock:</b> {product.stock}</p>
-              <p><b>Status:</b> {product.status === 1 ? "Available" : "Out of Stock"}</p>
+          {total > 1 && (
+            <div className="thumbnails">
+              {product.img.map((img, idx) => (
+                <div 
+                  key={idx} 
+                  className={`thumb-box ${idx === currentIndex ? "active" : ""}`}
+                  onClick={() => goTo(idx)}
+                >
+                  <img src={`data:image/jpeg;base64,${img}`} alt="thumb" />
+                </div>
+              ))}
             </div>
+          )}
+        </div>
 
-            <p className="desc">{product.description}</p>
+        {/* --- Right Column: Details --- */}
+        <div className="details-section">
+          <div className="product-header">
+            <span className="seller-badge">
+              <FaStore /> Sold by {product.sellername}
+            </span>
+            <h1 className="product-title">{product.pname}</h1>
+          </div>
 
-            <div className="actions row">
-              <button
-                className="btn add"
-                onClick={handleAddToCart}
-                disabled={product.status !== 1 || loadingAction !== null || isSeller}
-                title={isSeller ? "Sellers cannot add to cart" : ""}
-              >
-                {loadingAction === "cart" ? "Adding..." : "Add to Cart"}
-              </button>
-              <button
-                className="btn buy"
-                onClick={handleBuyNow}
-                disabled={product.status !== 1 || loadingAction !== null || isSeller}
-                title={isSeller ? "Sellers cannot buy products" : ""}
-              >
-                {loadingAction === "buy" ? "Processing..." : "Buy Now"}
-              </button>
+          <div className="price-block">
+            <span className="currency">₹</span>
+            <span className="price">{Number(product.price).toLocaleString()}</span>
+          </div>
+
+          <div className={`stock-status ${isOutOfStock ? "out" : "in"}`}>
+            {isOutOfStock ? (
+              <><FaTimesCircle /> Out of Stock</>
+            ) : (
+              <><FaCheckCircle /> In Stock ({product.stock} units left)</>
+            )}
+          </div>
+
+          <div className="description-box">
+            <h3>Description</h3>
+            <p>{product.description}</p>
+          </div>
+
+          <div className="action-buttons">
+            <button
+              className="btn-action cart"
+              onClick={handleAddToCart}
+              disabled={isOutOfStock || loadingAction !== null || isSeller}
+            >
+              {loadingAction === "cart" ? (
+                <span className="spinner"></span>
+              ) : (
+                <><FaShoppingCart /> Add to Cart</>
+              )}
+            </button>
+
+            <button
+              className="btn-action buy"
+              onClick={handleBuyNow}
+              disabled={isOutOfStock || loadingAction !== null || isSeller}
+            >
+              {loadingAction === "buy" ? (
+                <span className="spinner"></span>
+              ) : (
+                <><FaBolt /> Buy Now</>
+              )}
+            </button>
+          </div>
+
+          {isSeller && (
+            <div className="seller-warning">
+              Logged in as Seller: Purchasing disabled.
             </div>
-          </section>
+          )}
         </div>
       </div>
     </div>

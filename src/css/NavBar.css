@@ -1,7 +1,7 @@
 :root {
   --nav-bg: rgba(255, 255, 255, 0.85);
   --nav-border: rgba(255, 255, 255, 0.5);
-  --primary-color: #6366f1; /* Indigo matching login */
+  --primary-color: #6366f1;
   --primary-hover: #4f46e5;
   --text-dark: #1f2937;
   --text-light: #6b7280;
@@ -9,12 +9,10 @@
   --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
-/* Add padding to the top of the body to push ALL content down */
 body {
-  padding-top: 80px; /* 70px Navbar height + 10px buffer */
+  padding-top: 80px;
 }
 
-/* --- Main Navbar Container --- */
 .navbar {
   position: fixed;
   top: 0;
@@ -22,7 +20,7 @@ body {
   width: 100%;
   height: 70px;
   background: var(--nav-bg);
-  backdrop-filter: blur(12px); /* Glassmorphism */
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--nav-border);
   box-shadow: var(--shadow-sm);
   z-index: 1000;
@@ -47,7 +45,6 @@ body {
   padding: 0 20px;
 }
 
-/* --- Logo Section --- */
 .nav-left {
   flex: 1;
 }
@@ -67,14 +64,13 @@ body {
 .logo-text {
   font-size: 1.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--primary-color), #ec4899);
+  background-color: linear-gradient(135deg, var(--primary-color), #ec4899);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
 }
 
-/* --- Search Bar --- */
 .nav-center {
   flex: 2;
   display: flex;
@@ -89,7 +85,7 @@ body {
 
 .search-bar input {
   width: 100%;
-  padding: 10px 15px 10px 40px; /* Space for icon */
+  padding: 10px 15px 10px 40px;
   border-radius: 50px;
   border: 1px solid transparent;
   background-color: var(--search-bg);
@@ -113,7 +109,6 @@ body {
   color: var(--text-light);
 }
 
-/* --- Right Side Actions --- */
 .nav-right {
   flex: 1;
   display: flex;

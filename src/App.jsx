@@ -20,7 +20,6 @@ import ShippingInfo from "./ShippingInfo";
 import ContactUs from "./ContactUs";
 import TermsConditions from "./TermsConditions";
 
-// Wrappers for dynamic routes
 function AddProductPhotosWrapper() {
   const { id } = useParams();
   return <AddProductPhotos productId={id} />;
